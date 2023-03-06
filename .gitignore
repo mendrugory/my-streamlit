@@ -1,0 +1,4 @@
+venv/
+venv_creation.sh
+
+__pycache__

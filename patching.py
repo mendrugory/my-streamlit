@@ -5,6 +5,7 @@ def patching():
     from clearml import Task
     task = Task.init()
     if task._get_runtime_properties().get("_SERVICE"):
+        print("already patched")
         return
 
     print("patching")
@@ -22,18 +23,7 @@ def patching():
     print(f"path: {path}")
 
     def custom_get_option(key):
-        if key == "server.baseUrlPath":
-            return path
-        elif key == "server.enableCORS":
-            return "false"
-        elif key == "server.enableWebsocketCompression":
-            return "false"
-        elif key == "server.enableXsrfProtection":
-            return "false"
-        elif key == "server.serverAddress":
-            return "0.0.0.0"
-        else:
-            return original_get_option(key)
+        return path if key == "server.baseUrlPath" else original_get_option(key)
 
     streamlit.config.get_option = custom_get_option
 
